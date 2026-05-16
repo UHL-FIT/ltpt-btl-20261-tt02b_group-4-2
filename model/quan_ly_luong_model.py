@@ -29,3 +29,14 @@ class QuanLyLuongModel:
 
     def _save(self):
         self.df.to_csv(self.filename, index=False)
+
+    def update_employee(self, ma_nv: str, data: dict):
+        idx = self.df.index[self.df["Mã NV"] == ma_nv].tolist()
+        if idx:
+            for key, value in data.items():
+                self.df.at[idx[0], key] = value
+            self._save()
+
+    def delete_employee(self, ma_nv_list: list):
+        self.df = self.df[~self.df["Mã NV"].isin(ma_nv_list)]
+        self._save()
